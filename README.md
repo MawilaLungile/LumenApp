@@ -265,7 +265,7 @@ Lumen/
 **Requirements:** Visual Studio 2026 with the *.NET Multi-platform App UI development* workload.
 
 ```bash
-git clone https://github.com/<your-username>/Lumen.git
+git clone https://github.com/MawilaLungile/LumenApp.git
 ```
 
 1. Open `Lumen.sln` in Visual Studio.
