@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Brand -->
+    <Color x:Key="Primary">#7C5CFF</Color>
+    <Color x:Key="PrimaryDark">#5B3FE0</Color>
+    <Color x:Key="Accent">#00D4AA</Color>
+    <Color x:Key="Cyan">#00B4D8</Color>
+
+    <!-- Semantic -->
+    <Color x:Key="Success">#22C55E</Color>
+    <Color x:Key="Danger">#FF5C7A</Color>
+    <Color x:Key="Warning">#FFB547</Color>
+
+    <!-- Light theme -->
+    <Color x:Key="BgLight">#F4F5FB</Color>
+    <Color x:Key="SurfaceLight">#FFFFFF</Color>
+    <Color x:Key="Surface2Light">#ECEEF6</Color>
+    <Color x:Key="TextLight">#12131A</Color>
+    <Color x:Key="SubTextLight">#6B7085</Color>
+    <Color x:Key="BorderLight">#E6E8F0</Color>
+    <Color x:Key="TrackLight">#EDEAFF</Color>
+
+    <!-- Dark theme -->
+    <Color x:Key="BgDark">#0B0B12</Color>
+    <Color x:Key="SurfaceDark">#15151F</Color>
+    <Color x:Key="Surface2Dark">#1F1F2B</Color>
+    <Color x:Key="TextDark">#F4F4F8</Color>
+    <Color x:Key="SubTextDark">#9A9CB0</Color>
+    <Color x:Key="BorderDark">#242432</Color>
+    <Color x:Key="TrackDark">#262140</Color>
+
+</ResourceDictionary>

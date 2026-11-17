@@ -1,0 +1,10 @@
+<api type="debug" assembly-name="Lumen" mvid="16eff7d718b848bea413422797d778f0">
+  <java-to-managed>
+    <entry java-name="crc649baac36e1b36ce28/MainActivity" managed-name="Lumen.MainActivity, Lumen" managed-type-token-id="33554445" />
+    <entry java-name="crc649baac36e1b36ce28/MainApplication" managed-name="Lumen.MainApplication, Lumen" managed-type-token-id="33554446" />
+  </java-to-managed>
+  <managed-to-java>
+    <entry java-name="crc649baac36e1b36ce28/MainActivity" managed-name="Lumen.MainActivity, Lumen" managed-type-token-id="33554445" />
+    <entry java-name="crc649baac36e1b36ce28/MainApplication" managed-name="Lumen.MainApplication, Lumen" managed-type-token-id="33554446" />
+  </managed-to-java>
+</api>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="Lumen.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:Lumen.Views"
+       Shell.FlyoutBehavior="Disabled"
+       Shell.NavBarIsVisible="False"
+       Title="Lumen">
+
+    <TabBar>
+        <ShellContent Title="Home"
+                      Icon="tab_home.png"
+                      Route="home"
+                      ContentTemplate="{DataTemplate views:DashboardPage}" />
+        <ShellContent Title="Activity"
+                      Icon="tab_activity.png"
+                      Route="activity"
+                      ContentTemplate="{DataTemplate views:TransactionsPage}" />
+        <ShellContent Title="Budgets"
+                      Icon="tab_budgets.png"
+                      Route="budgets"
+                      ContentTemplate="{DataTemplate views:BudgetsPage}" />
+        <ShellContent Title="Goals"
+                      Icon="tab_goals.png"
+                      Route="goals"
+                      ContentTemplate="{DataTemplate views:GoalsPage}" />
+        <ShellContent Title="Settings"
+                      Icon="tab_settings.png"
+                      Route="settings"
+                      ContentTemplate="{DataTemplate views:SettingsPage}" />
+    </TabBar>
+
+</Shell>

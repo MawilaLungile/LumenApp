@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Lumen.Views.TransactionsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Lumen.ViewModels"
+             xmlns:m="clr-namespace:Lumen.Models"
+             xmlns:components="clr-namespace:Lumen.Views.Components"
+             x:DataType="vm:TransactionsViewModel"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+
+        <!-- Title -->
+        <Grid Padding="20,18,20,6" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout>
+                <Label Text="Activity" Style="{StaticResource H1}" />
+                <Label Text="{Binding Summary}" Style="{StaticResource Caption}" />
+            </VerticalStackLayout>
+            <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                <Border Style="{StaticResource Chip}" Padding="10,6"
+                        BackgroundColor="#1A22C55E">
+                    <Label Text="{Binding TotalIn, StringFormat='↓ {0}'}" TextColor="{StaticResource Success}"
+                           FontSize="12" FontAttributes="Bold" />
+                </Border>
+                <Border Style="{StaticResource Chip}" Padding="10,6"
+                        BackgroundColor="#1AFF5C7A">
+                    <Label Text="{Binding TotalOut, StringFormat='↑ {0}'}" TextColor="{StaticResource Danger}"
+                           FontSize="12" FontAttributes="Bold" />
+                </Border>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- Search -->
+        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="20,10,20,0" Padding="14,0" StrokeShape="RoundRectangle 18">
+            <Grid ColumnDefinitions="24,*" ColumnSpacing="8">
+                <Label Text="🔍" FontSize="15" VerticalOptions="Center" />
+                <Entry Grid.Column="1"
+                       Text="{Binding SearchText}"
+                       Placeholder="Search title, category or note"
+                       ClearButtonVisibility="WhileEditing"
+                       ReturnType="Search" />
+            </Grid>
+        </Border>
+
+        <!-- Filter chips -->
+        <HorizontalStackLayout Grid.Row="2" Spacing="8" Padding="20,14,20,8">
+            <Border Style="{StaticResource Chip}">
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsAll}" Value="True">
+                        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                    </DataTrigger>
+                </Border.Triggers>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SetFilterCommand}" CommandParameter="all" />
+                </Border.GestureRecognizers>
+                <Label Text="All" FontAttributes="Bold" FontSize="13">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsAll}" Value="True">
+                            <Setter Property="TextColor" Value="White" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Border>
+
+            <Border Style="{StaticResource Chip}">
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsIncomeFilter}" Value="True">
+                        <Setter Property="BackgroundColor" Value="{StaticResource Success}" />
+                    </DataTrigger>
+                </Border.Triggers>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SetFilterCommand}" CommandParameter="income" />
+                </Border.GestureRecognizers>
+                <Label Text="Income" FontAttributes="Bold" FontSize="13">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsIncomeFilter}" Value="True">
+                            <Setter Property="TextColor" Value="White" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Border>
+
+            <Border Style="{StaticResource Chip}">
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsExpenseFilter}" Value="True">
+                        <Setter Property="BackgroundColor" Value="{StaticResource Danger}" />
+                    </DataTrigger>
+                </Border.Triggers>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SetFilterCommand}" CommandParameter="expense" />
+                </Border.GestureRecognizers>
+                <Label Text="Expenses" FontAttributes="Bold" FontSize="13">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsExpenseFilter}" Value="True">
+                            <Setter Property="TextColor" Value="White" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Border>
+        </HorizontalStackLayout>
+
+        <!-- Grouped list -->
+        <RefreshView Grid.Row="3" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <CollectionView ItemsSource="{Binding Groups}"
+                            IsGrouped="True"
+                            SelectionMode="None">
+
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="vm:TransactionGroup">
+                        <Grid Padding="24,16,24,6" ColumnDefinitions="*,Auto">
+                            <Label Text="{Binding Title}" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Text="{Binding Total}" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:TransactionEntry">
+                        <ContentView Padding="20,5">
+                            <SwipeView BackgroundColor="Transparent">
+                                <SwipeView.RightItems>
+                                    <SwipeItems Mode="Reveal">
+                                        <SwipeItem Text="Delete"
+                                                   BackgroundColor="{StaticResource Danger}"
+                                                   Invoked="OnDeleteInvoked" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <components:TransactionRow />
+                            </SwipeView>
+                        </ContentView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout Padding="40,60" Spacing="8" HorizontalOptions="Center">
+                        <Label Text="🔎" FontSize="44" HorizontalOptions="Center" />
+                        <Label Text="Nothing here" Style="{StaticResource H3}" HorizontalOptions="Center" />
+                        <Label Text="Try another search or filter, or add a new transaction."
+                               Style="{StaticResource Caption}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="110" Color="Transparent" />
+                </CollectionView.Footer>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- FAB -->
+        <Border Grid.Row="3"
+                WidthRequest="62" HeightRequest="62"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 31"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,22,22">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#8B6CFF" Offset="0" />
+                    <GradientStop Color="#00B4D8" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Shadow>
+                <Shadow Brush="#7C5CFF" Opacity="0.5" Radius="20" Offset="0,8" />
+            </Border.Shadow>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding AddCommand}" />
+            </Border.GestureRecognizers>
+            <Label Text="+" TextColor="White" FontSize="32" FontAttributes="Bold"
+                   HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0,0,3" />
+        </Border>
+    </Grid>
+</ContentPage>

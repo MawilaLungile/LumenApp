@@ -1,0 +1,864 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lumen</name>
+    </assembly>
+    <members>
+        <member name="T:Lumen.Charts.ChartSlice">
+            <summary>One segment of a donut chart.</summary>
+        </member>
+        <member name="M:Lumen.Charts.ChartSlice.#ctor(System.String,System.Double,Microsoft.Maui.Graphics.Color)">
+            <summary>One segment of a donut chart.</summary>
+        </member>
+        <member name="T:Lumen.Charts.AnimatedChartView">
+            <summary>
+            Base class for hand-drawn charts. Each chart is a <see cref="T:Microsoft.Maui.Controls.GraphicsView"/> that draws
+            itself and animates a 0→1 "reveal" value whenever its data changes. No third-party
+            charting library required.
+            </summary>
+        </member>
+        <member name="P:Lumen.Charts.AnimatedChartView.Reveal">
+            <summary>Animation progress from 0 to 1.</summary>
+        </member>
+        <member name="M:Lumen.MauiProgram.ConfigureHandlers">
+            <summary>
+            Platform handler customisation: borderless entries for a clean, card-based look.
+            </summary>
+        </member>
+        <member name="T:Lumen.Models.Budget">
+            <summary>A monthly spending limit for one category.</summary>
+        </member>
+        <member name="T:Lumen.Models.Category">
+            <summary>An immutable spending / income category.</summary>
+        </member>
+        <member name="M:Lumen.Models.Category.#ctor(System.String,System.String,System.String,System.String,System.Boolean)">
+            <summary>An immutable spending / income category.</summary>
+        </member>
+        <member name="P:Lumen.Models.Category.SoftColor">
+            <summary>A translucent version of the category colour, used for icon backgrounds.</summary>
+        </member>
+        <member name="T:Lumen.Models.CategorySpend">
+            <summary>How much was spent in a category, and its share of the total.</summary>
+        </member>
+        <member name="M:Lumen.Models.CategorySpend.#ctor(Lumen.Models.Category,System.Double,System.Double)">
+            <summary>How much was spent in a category, and its share of the total.</summary>
+        </member>
+        <member name="T:Lumen.Services.DatabaseService">
+            <summary>
+            Async SQLite repository. The connection is created lazily and thread-safely
+            on first use; demo data is seeded on the very first launch.
+            </summary>
+        </member>
+        <member name="M:Lumen.Services.DatabaseService.ResetAsync(System.Boolean)">
+            <summary>Wipes all data. When <paramref name="reseed"/> is true, demo data is regenerated.</summary>
+        </member>
+        <member name="T:Lumen.Services.Money">
+            <summary>Currency formatting helpers shared by models, view models and charts.</summary>
+        </member>
+        <member name="M:Lumen.Services.Money.TryParse(System.String,System.Double@)">
+            <summary>Lenient parser: accepts "1200", "1 200,50", "R1200.5".</summary>
+        </member>
+        <member name="T:Lumen.Services.SeedData">
+            <summary>
+            Generates ~2.5 months of realistic demo data so the app looks alive on first launch.
+            Deterministic (fixed seed) so screenshots are reproducible.
+            </summary>
+        </member>
+        <member name="T:Lumen.Services.SettingsService">
+            <summary>Strongly-typed wrapper over MAUI Preferences.</summary>
+        </member>
+        <member name="P:Lumen.Services.SettingsService.Theme">
+            <summary>0 = follow system, 1 = light, 2 = dark.</summary>
+        </member>
+        <member name="T:Lumen.Services.ServiceHelper">
+            <summary>Resolves services for pages that are created by Shell/XAML (parameterless constructors).</summary>
+        </member>
+        <member name="T:Lumen.Services.Dialogs">
+            <summary>Thin wrappers over MAUI dialogs so view models stay tidy.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.BudgetItem">
+            <summary>A budget joined with this month's actual spending.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.BudgetsViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.Items">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.items"/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.OverallProgress">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.overallProgress"/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.OverallPercentText">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.overallPercentText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.TotalSpentText">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.totalSpentText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.TotalLimitText">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.totalLimitText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.RemainingText">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.remainingText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.StatusText">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.statusText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.IsOverBudget">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.isOverBudget"/>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.IsRefreshing">
+            <inheritdoc cref="F:Lumen.ViewModels.BudgetsViewModel.isRefreshing"/>
+        </member>
+        <member name="F:Lumen.ViewModels.BudgetsViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.BudgetsViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.BudgetsViewModel.Refresh"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.BudgetsViewModel.addCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.BudgetsViewModel.AddCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.BudgetsViewModel.AddCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.BudgetsViewModel.Add"/>.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.DashboardViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.IsBusy">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.isBusy"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.IsRefreshing">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.isRefreshing"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.Greeting">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.greeting"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.UserName">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.userName"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.Initials">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.initials"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.Balance">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.balance"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.MonthLabel">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.monthLabel"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.MonthIncome">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.monthIncome"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.MonthExpense">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.monthExpense"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.SavingsRateText">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.savingsRateText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.Insight">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.insight"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.InsightEmoji">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.insightEmoji"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.WeekTotal">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.weekTotal"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.WeeklyValues">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.weeklyValues"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.WeeklyLabels">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.weeklyLabels"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.CategorySlices">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.categorySlices"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.HasCategoryData">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.hasCategoryData"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.HasRecent">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.hasRecent"/>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.HasNoRecent">
+            <inheritdoc cref="F:Lumen.ViewModels.DashboardViewModel.hasNoRecent"/>
+        </member>
+        <member name="F:Lumen.ViewModels.DashboardViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.DashboardViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.DashboardViewModel.Refresh"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.DashboardViewModel.addTransactionCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.DashboardViewModel.AddTransactionCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.AddTransactionCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.DashboardViewModel.AddTransaction"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.DashboardViewModel.seeAllCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.DashboardViewModel.SeeAllCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.DashboardViewModel.SeeAllCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.DashboardViewModel.SeeAll"/>.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.GoalsViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.Goals">
+            <inheritdoc cref="F:Lumen.ViewModels.GoalsViewModel.goals"/>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.TotalSavedText">
+            <inheritdoc cref="F:Lumen.ViewModels.GoalsViewModel.totalSavedText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.TotalTargetText">
+            <inheritdoc cref="F:Lumen.ViewModels.GoalsViewModel.totalTargetText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.OverallProgress">
+            <inheritdoc cref="F:Lumen.ViewModels.GoalsViewModel.overallProgress"/>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.OverallPercentText">
+            <inheritdoc cref="F:Lumen.ViewModels.GoalsViewModel.overallPercentText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.CompletedText">
+            <inheritdoc cref="F:Lumen.ViewModels.GoalsViewModel.completedText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.IsRefreshing">
+            <inheritdoc cref="F:Lumen.ViewModels.GoalsViewModel.isRefreshing"/>
+        </member>
+        <member name="F:Lumen.ViewModels.GoalsViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.GoalsViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.GoalsViewModel.Refresh"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.GoalsViewModel.addCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.GoalsViewModel.AddCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.GoalsViewModel.AddCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.GoalsViewModel.Add"/>.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.OnboardingViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Lumen.ViewModels.OnboardingViewModel.Position">
+            <inheritdoc cref="F:Lumen.ViewModels.OnboardingViewModel.position"/>
+        </member>
+        <member name="P:Lumen.ViewModels.OnboardingViewModel.Name">
+            <inheritdoc cref="F:Lumen.ViewModels.OnboardingViewModel.name"/>
+        </member>
+        <member name="F:Lumen.ViewModels.OnboardingViewModel.nextCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.OnboardingViewModel.NextCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.OnboardingViewModel.NextCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.OnboardingViewModel.Next"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.OnboardingViewModel.skipCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.OnboardingViewModel.SkipCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.OnboardingViewModel.SkipCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.OnboardingViewModel.Skip"/>.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.SettingsViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.UserName">
+            <inheritdoc cref="F:Lumen.ViewModels.SettingsViewModel.userName"/>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.Initials">
+            <inheritdoc cref="F:Lumen.ViewModels.SettingsViewModel.initials"/>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.ThemeIndex">
+            <inheritdoc cref="F:Lumen.ViewModels.SettingsViewModel.themeIndex"/>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.Currency">
+            <inheritdoc cref="F:Lumen.ViewModels.SettingsViewModel.currency"/>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.StatsText">
+            <inheritdoc cref="F:Lumen.ViewModels.SettingsViewModel.statsText"/>
+        </member>
+        <member name="M:Lumen.ViewModels.SettingsViewModel.OnUserNameChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:Lumen.ViewModels.SettingsViewModel.UserName"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Lumen.ViewModels.SettingsViewModel.UserName"/> is changed.</remarks>
+        </member>
+        <member name="M:Lumen.ViewModels.SettingsViewModel.OnThemeIndexChanged(System.Int32)">
+            <summary>Executes the logic for when <see cref="P:Lumen.ViewModels.SettingsViewModel.ThemeIndex"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Lumen.ViewModels.SettingsViewModel.ThemeIndex"/> is changed.</remarks>
+        </member>
+        <member name="M:Lumen.ViewModels.SettingsViewModel.OnCurrencyChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:Lumen.ViewModels.SettingsViewModel.Currency"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Lumen.ViewModels.SettingsViewModel.Currency"/> is changed.</remarks>
+        </member>
+        <member name="F:Lumen.ViewModels.SettingsViewModel.exportCsvCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.SettingsViewModel.ExportCsvCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.ExportCsvCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.SettingsViewModel.ExportCsv"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.SettingsViewModel.reloadDemoCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.SettingsViewModel.ReloadDemoCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.ReloadDemoCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.SettingsViewModel.ReloadDemo"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.SettingsViewModel.eraseAllCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.SettingsViewModel.EraseAllCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.EraseAllCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.SettingsViewModel.EraseAll"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.SettingsViewModel.replayOnboardingCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.SettingsViewModel.ReplayOnboardingCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.SettingsViewModel.ReplayOnboardingCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.SettingsViewModel.ReplayOnboarding"/>.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.CategoryChoice">
+            <summary>A selectable category tile in the editor.</summary>
+            <inheritdoc/>
+        </member>
+        <member name="P:Lumen.ViewModels.CategoryChoice.IsSelected">
+            <inheritdoc cref="F:Lumen.ViewModels.CategoryChoice.isSelected"/>
+        </member>
+        <member name="T:Lumen.ViewModels.TransactionEditorViewModel">
+            <summary>Create / edit a transaction. Navigated to with "editor" or "editor?id=42".</summary>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.PageTitle">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.pageTitle"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.SaveText">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.saveText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.Title">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.title"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.AmountText">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.amountText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.Note">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.note"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.Date">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.date"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.Time">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.time"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.CanDelete">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.canDelete"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.CategoryChoices">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.categoryChoices"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.IsIncome">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionEditorViewModel.isIncome"/>
+        </member>
+        <member name="M:Lumen.ViewModels.TransactionEditorViewModel.OnIsIncomeChanged(System.Boolean)">
+            <summary>Executes the logic for when <see cref="P:Lumen.ViewModels.TransactionEditorViewModel.IsIncome"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Lumen.ViewModels.TransactionEditorViewModel.IsIncome"/> is changed.</remarks>
+        </member>
+        <member name="F:Lumen.ViewModels.TransactionEditorViewModel.setTypeCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.TransactionEditorViewModel.SetTypeCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.SetTypeCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:Lumen.ViewModels.TransactionEditorViewModel.SetType(System.String)"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.TransactionEditorViewModel.saveCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.TransactionEditorViewModel.SaveCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.SaveCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.TransactionEditorViewModel.Save"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.TransactionEditorViewModel.deleteCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.TransactionEditorViewModel.DeleteCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.DeleteCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.TransactionEditorViewModel.Delete"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.TransactionEditorViewModel.closeCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.TransactionEditorViewModel.CloseCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionEditorViewModel.CloseCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.TransactionEditorViewModel.Close"/>.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.TransactionGroup">
+            <summary>A day's worth of transactions, used for the grouped list.</summary>
+        </member>
+        <member name="T:Lumen.ViewModels.TransactionsViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.SearchText">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionsViewModel.searchText"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.Filter">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionsViewModel.filter"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.Groups">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionsViewModel.groups"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.Summary">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionsViewModel.summary"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.TotalIn">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionsViewModel.totalIn"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.TotalOut">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionsViewModel.totalOut"/>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.IsRefreshing">
+            <inheritdoc cref="F:Lumen.ViewModels.TransactionsViewModel.isRefreshing"/>
+        </member>
+        <member name="M:Lumen.ViewModels.TransactionsViewModel.OnSearchTextChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:Lumen.ViewModels.TransactionsViewModel.SearchText"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Lumen.ViewModels.TransactionsViewModel.SearchText"/> is changed.</remarks>
+        </member>
+        <member name="M:Lumen.ViewModels.TransactionsViewModel.OnFilterChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:Lumen.ViewModels.TransactionsViewModel.Filter"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Lumen.ViewModels.TransactionsViewModel.Filter"/> is changed.</remarks>
+        </member>
+        <member name="F:Lumen.ViewModels.TransactionsViewModel.setFilterCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.TransactionsViewModel.SetFilterCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.SetFilterCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:Lumen.ViewModels.TransactionsViewModel.SetFilter(System.String)"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.TransactionsViewModel.addCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.TransactionsViewModel.AddCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.AddCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.TransactionsViewModel.Add"/>.</summary>
+        </member>
+        <member name="F:Lumen.ViewModels.TransactionsViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Lumen.ViewModels.TransactionsViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Lumen.ViewModels.TransactionsViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Lumen.ViewModels.TransactionsViewModel.Refresh"/>.</summary>
+        </member>
+        <member name="T:Lumen.Views.Components.TransactionRow">
+            <summary>Reusable transaction card. Tapping it opens the editor.</summary>
+        </member>
+        <member name="M:Lumen.Views.DashboardPage.StaggerInAsync(System.Collections.Generic.IEnumerable{Microsoft.Maui.Controls.VisualElement})">
+            <summary>Cascading fade + slide entrance for each dashboard section.</summary>
+        </member>
+        <member name="T:Lumen.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Items">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Items" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.OverallProgress">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "OverallProgress" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.OverallPercentText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "OverallPercentText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TotalSpentText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TotalSpentText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TotalLimitText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TotalLimitText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.RemainingText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "RemainingText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.StatusText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "StatusText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsOverBudget">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsOverBudget" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsRefreshing">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsRefreshing" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsBusy">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsBusy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Greeting">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Greeting" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.UserName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "UserName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Initials">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Initials" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Balance">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Balance" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.MonthLabel">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "MonthLabel" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.MonthIncome">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "MonthIncome" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.MonthExpense">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "MonthExpense" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SavingsRateText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SavingsRateText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Insight">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Insight" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.InsightEmoji">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "InsightEmoji" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.WeekTotal">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "WeekTotal" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.WeeklyValues">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "WeeklyValues" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.WeeklyLabels">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "WeeklyLabels" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CategorySlices">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CategorySlices" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.HasCategoryData">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "HasCategoryData" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.HasNoCategoryData">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "HasNoCategoryData" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.HasRecent">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "HasRecent" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.HasNoRecent">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "HasNoRecent" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Goals">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Goals" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TotalSavedText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TotalSavedText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TotalTargetText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TotalTargetText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CompletedText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CompletedText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Position">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Position" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsLastSlide">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsLastSlide" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsNotLastSlide">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsNotLastSlide" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.NextText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "NextText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Name">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Name" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ThemeIndex">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ThemeIndex" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Currency">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Currency" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.StatsText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "StatsText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsSelected">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsSelected" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TileColor">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TileColor" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TileStroke">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TileStroke" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.PageTitle">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "PageTitle" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SaveText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SaveText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Title">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.AmountText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "AmountText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Note">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Note" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Date">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Date" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Time">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Time" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CanDelete">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CanDelete" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CategoryChoices">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CategoryChoices" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsIncome">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsIncome" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsExpense">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsExpense" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SearchText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SearchText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Filter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Filter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsAll">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsAll" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsIncomeFilter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsIncomeFilter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsExpenseFilter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsExpenseFilter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Groups">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Groups" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Summary">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Summary" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TotalIn">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TotalIn" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TotalOut">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TotalOut" generated properties.</summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Items">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Items" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.OverallProgress">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "OverallProgress" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.OverallPercentText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "OverallPercentText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TotalSpentText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TotalSpentText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TotalLimitText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TotalLimitText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.RemainingText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "RemainingText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.StatusText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "StatusText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsOverBudget">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsOverBudget" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsRefreshing">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsRefreshing" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsBusy">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsBusy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Greeting">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Greeting" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.UserName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "UserName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Initials">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Initials" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Balance">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Balance" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.MonthLabel">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "MonthLabel" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.MonthIncome">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "MonthIncome" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.MonthExpense">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "MonthExpense" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SavingsRateText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SavingsRateText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Insight">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Insight" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.InsightEmoji">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "InsightEmoji" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.WeekTotal">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "WeekTotal" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.WeeklyValues">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "WeeklyValues" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.WeeklyLabels">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "WeeklyLabels" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CategorySlices">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CategorySlices" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.HasCategoryData">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "HasCategoryData" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.HasNoCategoryData">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "HasNoCategoryData" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.HasRecent">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "HasRecent" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.HasNoRecent">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "HasNoRecent" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Goals">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Goals" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TotalSavedText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TotalSavedText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TotalTargetText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TotalTargetText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CompletedText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CompletedText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Position">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Position" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsLastSlide">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsLastSlide" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsNotLastSlide">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsNotLastSlide" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.NextText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "NextText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Name">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Name" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ThemeIndex">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ThemeIndex" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Currency">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Currency" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.StatsText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "StatsText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsSelected">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsSelected" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TileColor">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TileColor" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TileStroke">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TileStroke" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.PageTitle">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "PageTitle" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SaveText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SaveText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Title">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.AmountText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "AmountText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Note">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Note" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Date">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Date" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Time">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Time" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CanDelete">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CanDelete" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CategoryChoices">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CategoryChoices" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsIncome">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsIncome" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsExpense">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsExpense" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SearchText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SearchText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Filter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Filter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsAll">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsAll" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsIncomeFilter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsIncomeFilter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsExpenseFilter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsExpenseFilter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Groups">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Groups" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Summary">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Summary" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TotalIn">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TotalIn" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TotalOut">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TotalOut" generated properties.</summary>
+        </member>
+    </members>
+</doc>

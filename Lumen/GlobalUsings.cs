@@ -1,0 +1,10 @@
+global using System.Collections.ObjectModel;
+global using System.Globalization;
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;
+global using Microsoft.Extensions.DependencyInjection;
+global using Lumen.Models;
+global using Lumen.Services;
+global using Lumen.ViewModels;
+global using Lumen.Views;
+global using Lumen.Charts;
